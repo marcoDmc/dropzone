@@ -1,3 +1,4 @@
+"use client"
 import { ReactNode } from "react"
 
 interface FileRootProps {
@@ -6,8 +7,13 @@ interface FileRootProps {
 
 
 export default function FileRoot({ children }: FileRootProps) {
+    const forms = (e: any) => {
+        e.preventDefault()
+    }
     return (
-        <><div
+        <><form
+            encType="multipart/form-data"
+            onSubmit={forms}
             className="grid
             bg-neutral-100
             w-full
@@ -19,6 +25,6 @@ export default function FileRoot({ children }: FileRootProps) {
             p-5
             shadow-lg shadow-neutral-500
             "
-        >{children}</div></>
+        >{children}</form></>
     )
 }
