@@ -16,9 +16,9 @@
 
 **Backend (ainda em desenvolvimento):**
 
-- Java
-- Spring Framework
-- PostgreSQL ou MySQL (a ser decidido)
+- NestJs
+- Typescript
+- PostgreSQL
 #### Como Contribuir
 Sinta-se à vontade para contribuir com este projeto! Seja por meio de correções de bugs, melhorias no código, ou até mesmo sugestões para novos recursos, todas as formas de contribuição são bem-vindas.
 
