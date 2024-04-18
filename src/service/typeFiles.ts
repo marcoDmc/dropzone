@@ -1,5 +1,5 @@
 const typeFilesImage = [
-    "jpg", "gif", "png", "svg", "psd", "webp", "raw", "tiff", "bmp", "jpeg"
+    "jpg", "gif", "png", "svg", "psd", "raw", "tiff", "bmp", "jpeg"
 ]
 
 export const methods = {
@@ -8,18 +8,19 @@ export const methods = {
 
         let file: any = ""
         let firstFileName = ""
+        const lenght = 30
 
         if (!filename) return ""
         const thereAreSpaces = /\s/.test(filename)
 
-        if (filename.length < 20) firstFileName = filename
+        if (filename.length < lenght) firstFileName = filename
 
-        if (thereAreSpaces && filename.length >= 20) {
+        if (thereAreSpaces && filename.length >= lenght) {
             file = filename.split(" ")
             firstFileName = file[file.length - 1]
         }
 
-        if (!thereAreSpaces && filename.length >= 20) {
+        if (!thereAreSpaces && filename.length >= lenght) {
             file = filename.split(".")
             firstFileName = file[0].split("")[file.length - 1] + "." + file[1]
         }
@@ -29,12 +30,12 @@ export const methods = {
 
     handleVerifyFiles(file: string): boolean {
         const files = [
-            "jpg", "gif", "png", "svg", "psd", "webp", "raw", "tiff", "bmp", "jpeg",
+            "jpg", "gif", "png", "svg", "psd", "raw", "tiff", "bmp", "jpeg",
             "docx", "pdf", "txt", "xlsx"
         ]
 
-        if (!files.includes(file)) return false
-        else return true
+        if (files.includes(file)) return true
+        else return false
     }
     ,
     handleReturnTypeFile(file: string): string {
@@ -70,19 +71,20 @@ export const methods = {
     },
 
 
-    convertingMeasurements(size: number): string {
+    convertingMeasurements(size: string): string {
+        const sz = parseInt(size)
         const KB = 1024;
         const MB = KB * KB;
         const GB = MB * KB;
 
-        if (size < KB) {
-            return size + ' b';
-        } else if (size < MB) {
-            return (size / KB).toFixed(2) + ' kb';
-        } else if (size < GB) {
-            return (size / MB).toFixed(2) + ' mb';
+        if (sz < KB) {
+            return sz + ' b';
+        } else if (sz < MB) {
+            return (sz / KB).toFixed(2) + ' kb';
+        } else if (sz < GB) {
+            return (sz / MB).toFixed(2) + ' mb';
         } else {
-            return (size / GB).toFixed(2) + ' gb';
+            return (sz / GB).toFixed(2) + ' gb';
         }
     }
 }
