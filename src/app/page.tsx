@@ -4,7 +4,7 @@ import { Http } from "@/config/axiosConfig";
 import { request } from "@/service/request";
 import { methods } from "@/service/typeFiles";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillFileText } from "react-icons/ai";
 import { BsFileEarmarkImage, BsFiletypeDoc } from "react-icons/bs";
 import { ImDownload } from "react-icons/im";
@@ -20,13 +20,15 @@ export default function Home() {
   const [status, setStatus] = useState<number | null>();
   const [spinner, setSpinner] = useState(false)
   const [range, setRange] = useState(0)
+  const [image, setImage] = useState(new Blob([]))
+  const [link, setLink] = useState("")
 
+  const email = String(process.env.NEXT_PUBLIC_EMAIL)
+  const password = String(process.env.NEXT_PUBLIC_PASSWORD)
+  const nickname = String(process.env.NEXT_PUBLIC_NICKNAME)
 
-  const handleResetFileExt = () => {
-    setFileExtension("")
-    setType("")
-    setSize("")
-  }
+  const file = methods.handleReturnTypeFile(fileExtension)
+
   const handleGetNameFile = (e: any) => {
 
 
@@ -45,9 +47,8 @@ export default function Home() {
     }
 
   }
-  const file = methods.handleReturnTypeFile(fileExtension)
+  const handleSubmit = async (event: any) => {
 
-  const Submit = async (event: any) => {
     event.preventDefault()
 
     if (status !== 201 || status === null) setSpinner(true)
@@ -57,39 +58,41 @@ export default function Home() {
 
     const file = event.target.file.files[0]
 
-    const token = await request.PostLogin("marmaducke", "Srxablauu@591");
+    const token = await request.handleLogin(nickname, password);
 
     if (!token) return
 
+    localStorage.setItem("token", token)
+
     const startTime = new Date();
 
-    try {
-      const options = {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'multipart/form-data',
-          'Email': 'marcodamasceno58@gmail.com',
-          'Password': 'Srxablauu@591'
-        }
-      }
-      await Http.post("/user/file/upload",
-        { file: file },
-        options).then(res => setStatus(res.status))
-        .catch(e => setStatus(e.status))
+    const statuscode = await request.handleUploadFile(email, password, file, token)
 
-      const endTime = new Date();
+    setStatus(statuscode)
 
-      const timeTaken = Number(endTime) - Number(startTime);
+    const endTime = new Date();
 
+    const timeTaken = Number(endTime) - Number(startTime);
+
+    if (statuscode !== 201) {
+      setRange(0)
+      setSpinner(false)
+      window.alert("file already exist")
+    }
+    else {
       for (let i = 0; i < timeTaken; i++) {
         setRange(i)
       }
-
-
-    } catch (err) {
-      console.error(err)
     }
+
   }
+
+  useEffect(() => {
+    setStatus(0)
+    setRange(0)
+    setSpinner(false)
+  }, [fileExtension])
+
   return (
 
     <>
@@ -97,7 +100,7 @@ export default function Home() {
       <section className="w-screen h-screen flex items-center justify-center">
         <form
           encType="multipart/form-data"
-          onSubmit={Submit}
+          onSubmit={handleSubmit}
           className="grid bg-neutral-100 w-full max-w-96 overflow-hidden rounded h-auto
         gap-5
         p-5
@@ -266,18 +269,21 @@ export default function Home() {
 
               <div className="bg-neutral-300 w-full h-1 rounded overflow-hidden flex">
                 <span className={`bg-red-400 h-full transition-all`} style={{
-                  width: range+'%'
+                  width: range + '%'
                 }}></span>
               </div>
             </div>
             {
               status === 201 ? (
-                <div className="
+
+                <a href={link.length > 0 ? link : "#"} download={fileExtension}>
+                  <div className="
               hover:border-red-300 transition-all
               w-full max-w-14 cursor-pointer
               p-2 rounded bg-neutral-100 border  flex items-center justify-center">
-                  <ImDownload size={16} style={{ color: "red" }} />
-                </div>
+                    <ImDownload size={16} style={{ color: "red" }} />
+                  </div>
+                </a>
               ) : ""
             }
 
@@ -323,13 +329,6 @@ export default function Home() {
           transition-all
           "
           >
-            <button
-              onClick={handleResetFileExt} 
-              className={
-                fileExtension ? "bg-neutral-100 w-full cursor-pointer max-w-20 p-1.5 text-neutral-800 rounded  border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all hover:scale-105 hover:transition-all opacity-100"
-                  : "bg-neutral-100 w-full max-w-20 p-1.5  pointer-events-none text-neutral-800 rounded cursor-default border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all  opacity-35"
-              }
-            >cancel</button>
             <button
               className={
                 fileExtension ?
