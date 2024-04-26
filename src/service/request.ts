@@ -17,6 +17,12 @@ export const request = {
 
     async handleUploadFile(email: string, password: string, file: File, token: string) {
 
+        const response = {
+            status: 0,
+            total: 0
+        }
+
+
         if (!token || !email || !password || !file) return
 
         try {
@@ -26,12 +32,22 @@ export const request = {
                     'Content-Type': 'multipart/form-data',
                     'Email': email,
                     'Password': password
+                },
+                onUploadProgress: (data: any) => {
+                    response.total = Math.round(100 * (data.loaded
+                        /
+                        data.total))
                 }
             }
 
-            return await Http.post("/user/file/upload", { file: file }, options).then(res => res.status).catch(e => e.status)
+            await Http.post("/user/file/upload", { file: file }, options).then(res => {
+                response.status = res.status
+
+            }).catch(e => e.status)
         } catch (e) {
             console.error(e)
         }
+
+        return response
     }
 }
