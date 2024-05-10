@@ -129,7 +129,7 @@ export default function Upload() {
         w-full 
         text-start
         transition-all
-        ">upload file</h1>
+        ">drop zone</h1>
                     <div
                         className="
           w-full
