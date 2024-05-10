@@ -5,12 +5,8 @@ import { request } from "@/service/request";
 import { methods } from "@/utils/methods";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { AiFillFileText } from "react-icons/ai";
-import { BsFileEarmarkImage, BsFiletypeDoc } from "react-icons/bs";
-import { ImDownload } from "react-icons/im";
-import { IoCloudUploadSharp } from "react-icons/io5";
-import { PiFilePdf } from "react-icons/pi";
-import { RiFileExcel2Line } from "react-icons/ri";
+import Icon from "@/utils/icons"
+
 
 export default function Upload() {
 
@@ -154,7 +150,7 @@ export default function Upload() {
           cursor-pointer
           "
                     >
-                        <IoCloudUploadSharp size={35} className="
+                        <Icon.IoCloudUploadSharp size={35} className="
                 text-blue-600
                 "/>
                         <input onChange={handleGetNameFile} type="file" name="file" id="file"
@@ -253,19 +249,19 @@ export default function Upload() {
                     transition-all 
                     ">
                                 {
-                                    file == "image" && <BsFileEarmarkImage size={20} style={{ color: "green" }} />
+                                    file == "image" && <Icon.BsFileEarmarkImage size={20} style={{ color: "green" }} />
                                 }
                                 {
-                                    file == "doc" && <BsFiletypeDoc size={20} style={{ color: "blue" }} />
+                                    file == "doc" && <Icon.BsFiletypeDoc size={20} style={{ color: "blue" }} />
                                 }
                                 {
-                                    file == "pdf" && <PiFilePdf size={20} style={{ color: "red" }} />
+                                    file == "pdf" && <Icon.PiFilePdf size={20} style={{ color: "red" }} />
                                 }
                                 {
-                                    file == "excel" && <RiFileExcel2Line size={20} style={{ color: "orange" }} />
+                                    file == "excel" && <Icon.RiFileExcel2Line size={20} style={{ color: "orange" }} />
                                 }
                                 {
-                                    file == "text" && <AiFillFileText size={20} style={{ color: "black" }} />
+                                    file == "text" && <Icon.AiFillFileText size={20} style={{ color: "black" }} />
                                 }
                                 {fileExtension ? fileExtension : "waiting"}
                             </strong>
@@ -293,7 +289,7 @@ export default function Upload() {
               hover:border-red-300 transition-all
               w-full max-w-14 cursor-pointer
               p-2 rounded bg-neutral-100 border  flex items-center justify-center">
-                                        <ImDownload size={16} style={{ color: "red" }} />
+                                        <Icon.ImDownload size={16} style={{ color: "red" }} />
                                     </div>
                                 </a>
                             )
