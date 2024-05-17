@@ -2,6 +2,7 @@ import NextAuthSessionProvider from '@/providers/sessionProvider'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ProviderComponent from './(redux)/provider/Provider';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+        <ProviderComponent>
+          <NextAuthSessionProvider>
+            {children}
+          </NextAuthSessionProvider>
+        </ProviderComponent>
       </body>
     </html>
   );

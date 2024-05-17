@@ -1,4 +1,4 @@
-import { Http } from "../config/axiosConfig"
+import { Http } from "@/app/config/axiosConfig"
 
 export const request = {
     async handleLogin(nickname: string, password: string) {
@@ -49,5 +49,5 @@ export const request = {
         }
 
         return response
-    }
+    },
 }

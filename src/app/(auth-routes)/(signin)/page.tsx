@@ -2,31 +2,40 @@
 
 import { methods } from "@/utils/methods";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState, SyntheticEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FormComponent } from "@/components/FormComponent/Form";
-import { BsKey } from "react-icons/bs";
+import { Http } from "@/app/config/axiosConfig";
+import { ISignin } from "@/types/ISignin";
+import Icon from "@/utils/icons"
+import cookie from "js-cookie"
 
 
-export default function Home() {
 
-  const [credential, setCredential] = useState({ name: "", password: "" })
+export default function Signin() {
+
+  const [credential, setCredential] = useState({ nickname: "", password: "" })
   const router = useRouter()
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const handleSubmit = async (event: any) => {
+    event.preventDefault()
 
-    e.preventDefault()
-
-    const testNickname = methods.handleVerifyNickname(credential.name)
-    const testPassword = methods.handleVerifyPassword(credential.password)
-
-    if (!testNickname || !testPassword) return
+    if (!methods.handleVerifyNickname(credential.nickname) || !methods.handleVerifyPassword(credential.password)) return
 
     const result = await signIn('credentials', {
-      name: credential.name,
+      nickname: credential.nickname,
       password: credential.password,
       redirect: false
     })
+
+    const signin = await Http.post<ISignin>("/login", {
+      nickname: credential.nickname,
+      password: credential.password
+    }).then(res => res.data)
+
+    cookie.set("token", signin.token)
+    cookie.set("nickname", credential.nickname)
+    cookie.set("password", credential.password)
 
     if (result?.error) {
       console.log(result)
@@ -37,7 +46,7 @@ export default function Home() {
 
   }
 
-  const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
+  const handleName = (e: ChangeEvent<HTMLInputElement>) =>  setCredential({ ...credential, nickname: e.target.value })
 
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
 
@@ -72,12 +81,12 @@ export default function Home() {
             after:bg-neutral-700
             after:top-11
             " >
-              <label htmlFor="name" className="w-full flex">
+              <label htmlFor="nickname" className="w-full flex">
                 <input type="text"
-                  id="name"
+                  id="nickname"
                   autoComplete="off"
                   placeholder="your nickname"
-                  value={credential.name}
+                  value={credential.nickname}
                   onChange={handleName}
                   className="
                   bg-transparent
@@ -110,22 +119,11 @@ export default function Home() {
                   placeholder:text-sm
                   "
                 />
-                <BsKey size={25} style={{ color: "#fff" }} />;
+                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
 
               </label>
             </fieldset>
-            <button
-              className="
-            w-full
-            bg-blue-600
-            hover:opacity-75
-            hover:transition-all
-            rounded-lg
-            p-1 first-letter:capitalize
-            text-neutral-100
-            "
-              type="submit"
-            >sign in</button>
+            <FormComponent.Button name="sign in" />
           </FormComponent.Content>
         </FormComponent.Root>
         <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
