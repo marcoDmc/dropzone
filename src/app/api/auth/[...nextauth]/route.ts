@@ -1,4 +1,4 @@
-import { Http } from "@/config/axiosConfig"
+import { Http } from "@/app/config/axiosConfig"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
@@ -38,6 +38,7 @@ const nextAuthOptions: NextAuthOptions = {
             },
         }),
     ],
+
     pages: {
         signIn: "/",
     }
