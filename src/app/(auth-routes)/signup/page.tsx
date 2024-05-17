@@ -1,35 +1,36 @@
 "use client"
 
 import { FormComponent } from "@/components/FormComponent/Form"
-import { Http } from "@/config/axiosConfig"
+import { Http } from "@/app/config/axiosConfig"
 import { methods } from "@/utils/methods"
-import { ChangeEvent, SyntheticEvent, useState } from "react"
-import { BsAt, BsKey } from "react-icons/bs"
-
+import { ChangeEvent, useState } from "react"
+import Icon from "@/utils/icons"
+import cookie from "js-cookie"
 
 
 
 export default function Signup() {
 
-    const [credentials, setCredentials] = useState({ name: "", password: "", email: "" })
+    const [credential, setCredential] = useState({ nickname: "", password: "", email: "" })
 
-    const handleSubmit = async (e: SyntheticEvent) => {
+    const handleSubmit = async (event: any) => {
 
-        e.preventDefault()
+        event.preventDefault()
 
-        const testNickname = methods.handleVerifyNickname(credentials.name)
-        const testPassword = methods.handleVerifyPassword(credentials.password)
-        const testEmail = methods.handleVerifyEmail(credentials.email)
+        const testNickname = methods.handleVerifyNickname(credential.nickname)
+        const testPassword = methods.handleVerifyPassword(credential.password)
+        const testEmail = methods.handleVerifyEmail(credential.email)
 
 
         if (!testNickname || !testPassword || !testEmail) return
 
 
         const data = {
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password
+            nickname: credential.nickname,
+            email: credential.email,
+            password: credential.password
         }
+
 
         try {
             await Http.post("/user/create", data)
@@ -38,12 +39,15 @@ export default function Signup() {
         } catch (err) {
             console.error(err)
         }
+        cookie.set("nickname", credential.nickname)
+        cookie.set("password", credential.password)
+
     }
 
 
-    const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setCredentials({ ...credentials, name: e.target.value })
-    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredentials({ ...credentials, password: e.target.value })
-    const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setCredentials({ ...credentials, email: e.target.value })
+    const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, nickname: e.target.value })
+    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
+    const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, email: e.target.value })
 
 
 
@@ -61,7 +65,6 @@ export default function Signup() {
                         ">
 
                 <FormComponent.Root handleSubmit={handleSubmit}>
-
                     <FormComponent.Content>
                         <fieldset className="
                         
@@ -84,11 +87,11 @@ export default function Signup() {
                                 after:bg-neutral-700
                                 after:top-11
                                 " >
-                            <label htmlFor="name" className="w-full flex">
+                            <label htmlFor="nickname" className="w-full flex">
                                 <input type="text"
-                                    id="name"
+                                    id="nickname"
                                     placeholder="your nickname"
-                                    value={credentials.name}
+                                    value={credential.nickname}
                                     autoComplete="off"
                                     onChange={handleNickname}
                                     className="
@@ -108,7 +111,7 @@ export default function Signup() {
                                 <input type="email"
                                     id="email"
                                     placeholder="you@domain.com"
-                                    value={credentials.email}
+                                    value={credential.email}
                                     onChange={handleEmail}
                                     autoComplete="off"
                                     className="
@@ -121,7 +124,7 @@ export default function Signup() {
                                     "
                                 />
 
-                                <BsAt size={25} style={{ color: "#fff" }} />
+                                <Icon.BsAt size={25} style={{ color: "#fff" }} />
                             </label>
                             <label htmlFor="password" className="
                                     w-full flex
@@ -132,7 +135,7 @@ export default function Signup() {
                                     type="password"
                                     id="password"
                                     placeholder="your secret password"
-                                    value={credentials.password}
+                                    value={credential.password}
                                     onChange={handlePassword}
                                     autoComplete="off"
                                     className="
@@ -144,24 +147,13 @@ export default function Signup() {
                                     placeholder:text-sm
                                     "
                                 />
-                                <BsKey size={25} style={{ color: "#fff" }} />;
+                                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
                             </label>
                         </fieldset>
-                        <button
-                            className="
-                                w-full
-                                bg-blue-600
-                                rounded-lg
-                                p-1 first-letter:capitalize
-                                text-neutral-100
-                                hover:opacity-75
-                                hover:transition-all
-                                "
-                            type="submit"
-                        >sign up</button>
+                        <FormComponent.Button name="sign up" />
                     </FormComponent.Content>
                 </FormComponent.Root>
-                <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-24">
+                <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-20">
                     <p className="first-letter:capitalize">
                         return for <a href="http://localhost:3000" className="text-blue-400">sign in</a>
                     </p>
