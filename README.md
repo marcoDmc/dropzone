@@ -1,6 +1,6 @@
 # Upload File
 
-![app](./public/app.png)
+![app](./public/signin.png)
 
 
 - Este é um projeto para facilitar o upload de arquivos de forma simples e eficiente. Até o momento, construi parcialmente o frontend utilizando Next.js, Tailwind CSS e React Icons, seguindo o padrão de componentes para uma experiência de usuário mais intuitiva.
@@ -52,3 +52,6 @@ GitHub Issues
 [GitHub Issues](https://github.com/marcodmc/upload-file/issues)
 
 Agradeço o seu interesse em contribuir para tornar este projeto ainda melhor!
+
+
+
