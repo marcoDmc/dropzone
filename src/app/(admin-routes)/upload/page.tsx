@@ -5,6 +5,8 @@ import { request } from "@/service/request";
 import { methods } from "@/utils/methods";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { environment } from "@/utils/environment";
+import { ICredentialFiles } from "@/types/ICredentialFiles"
 import Icon from "@/utils/icons"
 
 
