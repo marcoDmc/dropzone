@@ -45,4 +45,4 @@ const nextAuthOptions: NextAuthOptions = {
 }
 
 
-export { nextAuthOptions }
+export default  nextAuthOptions 
