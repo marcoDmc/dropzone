@@ -155,7 +155,7 @@ export default function Signup() {
                 </FormComponent.Root>
                 <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-20">
                     <p className="first-letter:capitalize">
-                        return for <a href="http://localhost:3000" className="text-blue-400">sign in</a>
+                        return for <a href="/" className="text-blue-400">sign in</a>
                     </p>
                 </div>
             </section>
