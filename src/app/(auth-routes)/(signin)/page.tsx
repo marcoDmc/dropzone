@@ -128,10 +128,10 @@ export default function Signin() {
         </FormComponent.Root>
         <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
           <p className="first-letter:capitalize">
-            forgot your <a href="http://localhost:3000/forgot" className="text-blue-400">password</a>
+            forgot your <a href="/forgot" className="text-blue-400">password</a>
           </p>/
           <p className="first-letter:capitaliz">
-            create an <a href="http://localhost:3000/signup" className="text-blue-400">account</a>
+            create an <a href="/signup" className="text-blue-400">account</a>
           </p>
         </div>
       </section>
