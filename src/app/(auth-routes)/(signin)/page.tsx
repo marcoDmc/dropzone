@@ -14,27 +14,27 @@ import cookie from "js-cookie"
 
 export default function Signin() {
 
-  const [credential, setCredential] = useState({ nickname: "", password: "" })
+  const [credential, setCredential] = useState({ username: "", password: "" })
   const router = useRouter()
 
   const handleSubmit = async (event: any) => {
     event.preventDefault()
 
-    if (!methods.handleVerifyNickname(credential.nickname) || !methods.handleVerifyPassword(credential.password)) return
+    if (!methods.handleVerifyNickname(credential.username) || !methods.handleVerifyPassword(credential.password)) return
 
     const result = await signIn('credentials', {
-      nickname: credential.nickname,
+      username: credential.username,
       password: credential.password,
       redirect: false
     })
 
     const signin = await Http.post<ISignin>("/login", {
-      nickname: credential.nickname,
+      username: credential.username,
       password: credential.password
     }).then(res => res.data)
 
     cookie.set("token", signin.token)
-    cookie.set("nickname", credential.nickname)
+    cookie.set("username", credential.username)
     cookie.set("password", credential.password)
 
     if (result?.error) {
@@ -46,7 +46,7 @@ export default function Signin() {
 
   }
 
-  const handleName = (e: ChangeEvent<HTMLInputElement>) =>  setCredential({ ...credential, nickname: e.target.value })
+  const handleName = (e: ChangeEvent<HTMLInputElement>) =>  setCredential({ ...credential, username: e.target.value })
 
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
 
@@ -81,12 +81,12 @@ export default function Signin() {
             after:bg-neutral-700
             after:top-11
             " >
-              <label htmlFor="nickname" className="w-full flex">
+              <label htmlFor="username" className="w-full flex">
                 <input type="text"
-                  id="nickname"
+                  id="username"
                   autoComplete="off"
-                  placeholder="your nickname"
-                  value={credential.nickname}
+                  placeholder="your username"
+                  value={credential.username}
                   onChange={handleName}
                   className="
                   bg-transparent
