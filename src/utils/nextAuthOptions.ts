@@ -8,8 +8,8 @@ const nextAuthOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                name: { label: "name", type: "text", placeholder: "nickname" },
-                password: { label: "password", type: "password" },
+                name: { label: "name", type: "text", placeholder: "your nickname" },
+                password: { label: "password", type: "your secret password" },
             },
             async authorize(credentials) {
                 const { name, password } = credentials as {
