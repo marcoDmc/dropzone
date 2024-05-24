@@ -1,7 +1,6 @@
 "use client"
 
 import { Http } from "@/app/config/axiosConfig";
-import { request } from "@/service/request";
 import { methods } from "@/utils/methods";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
