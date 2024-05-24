@@ -5,37 +5,63 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FormComponent } from "@/components/FormComponent/Form";
-import { Http } from "@/app/config/axiosConfig";
-import { ISignin } from "@/types/ISignin";
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
-
-
+import { signin } from "@/service/signin";
+import { ICookies } from "@/types/ICookies";
+import { INextAuth } from "@/types/INextAuth";
 
 export default function Signin() {
 
-  const [credential, setCredential] = useState({ username: "", password: "" })
+  const [credential, setCredential] = useState({ name: "", password: "" })
   const router = useRouter()
 
   const handleSubmit = async (event: any) => {
+
     event.preventDefault()
 
-    if (!methods.handleVerifyNickname(credential.username) || !methods.handleVerifyPassword(credential.password)) return
+    if (!methods.handleVerifyNickname(credential.name) || !methods.handleVerifyPassword(credential.password)) return
 
-    const result = await signIn('credentials', {
-      username: credential.username,
-      password: credential.password,
-      redirect: false
+    handleAuthenticationRoutes({
+      name: credential.name,
+      password: credential.password
     })
 
-    const signin = await Http.post<ISignin>("/login", {
-      username: credential.username,
+    const data = await signin.handleLogin({
+      name: credential.name,
       password: credential.password
-    }).then(res => res.data)
+    }).then(res => res)
 
-    cookie.set("token", signin.token)
-    cookie.set("username", credential.username)
-    cookie.set("password", credential.password)
+    if (!data.token) return
+
+    handleSetCoookies({
+      name: credential.name,
+      token: data?.token
+    })
+
+  }
+
+  const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
+
+  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
+
+  const handleSetCoookies = (credentials: ICookies) => {
+    const { name, token } = credentials
+    if (!name || !token) return
+    cookie.set("token", token)
+    cookie.set("name", name)
+  }
+  const handleAuthenticationRoutes = async (credentials: INextAuth) => {
+
+    const { name, password } = credentials
+
+    if (!name || !password) return
+
+    const result = await signIn('credentials', {
+      name,
+      password,
+      redirect: false
+    })
 
     if (result?.error) {
       console.log(result)
@@ -43,12 +69,7 @@ export default function Signin() {
     }
 
     router.replace("/upload")
-
   }
-
-  const handleName = (e: ChangeEvent<HTMLInputElement>) =>  setCredential({ ...credential, username: e.target.value })
-
-  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
 
   return (
 
@@ -81,12 +102,12 @@ export default function Signin() {
             after:bg-neutral-700
             after:top-11
             " >
-              <label htmlFor="username" className="w-full flex">
+              <label htmlFor="name" className="w-full flex">
                 <input type="text"
-                  id="username"
+                  id="name"
                   autoComplete="off"
-                  placeholder="your username"
-                  value={credential.username}
+                  placeholder="your name"
+                  value={credential.name}
                   onChange={handleName}
                   className="
                   bg-transparent
