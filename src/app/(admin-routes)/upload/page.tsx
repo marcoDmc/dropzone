@@ -9,6 +9,7 @@ import { environment } from "@/utils/environment";
 import { ICredentialFiles } from "@/types/ICredentialFiles"
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
+import { archive } from "@/service/archive";
 
 export default function Upload() {
     const [fileInfo, setFileInfo] = useState<ICredentialFiles>({
