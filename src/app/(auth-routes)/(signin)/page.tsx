@@ -8,8 +8,8 @@ import { FormComponent } from "@/components/FormComponent/Form";
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
 import { signin } from "@/service/signin";
-import { ICookies } from "@/types/ICookies";
-import { INextAuth } from "@/types/INextAuth";
+import { ICookies } from "@/types/ICookiesDTO";
+import { INextAuth } from "@/types/INextAuthDTO";
 
 export default function Signin() {
 

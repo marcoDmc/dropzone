@@ -5,7 +5,7 @@ import { methods } from "@/utils/methods";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { environment } from "@/utils/environment";
-import { ICredentialFiles } from "@/types/ICredentialFiles"
+import { ICredentialFiles } from "@/types/ICredentialFilesDTO"
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
 import { archive } from "@/service/archive";

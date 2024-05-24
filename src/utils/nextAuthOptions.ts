@@ -8,8 +8,8 @@ const nextAuthOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                name: { label: "name", type: "text", placeholder: "your nickname" },
-                password: { label: "password", type: "your secret password" },
+                name: { label: "name", type: "text", placeholder: "your name" },
+                password: { label: "password", type: "password", placeholder: "your secret password" },
             },
             async authorize(credentials) {
                 const { name, password } = credentials as {
@@ -31,7 +31,7 @@ const nextAuthOptions: NextAuthOptions = {
 
                 const user = await res.data;
 
-                if (res && user) return user;
+                if (user) return user;
 
                 return null;
 
@@ -45,4 +45,4 @@ const nextAuthOptions: NextAuthOptions = {
 }
 
 
-export default  nextAuthOptions 
+export default nextAuthOptions 
