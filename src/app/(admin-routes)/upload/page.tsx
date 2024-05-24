@@ -55,7 +55,7 @@ export default function Upload() {
 
         if (getToken && getPassword) {
 
-            const response = await request.handleUploadFile(environment.email, getPassword, file, getToken)
+            const response = await archive.handleCreate(environment.email, getPassword, file, getToken)
             setStatus(response?.status)
 
             if (response?.status !== 201) {
