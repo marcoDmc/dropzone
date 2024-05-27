@@ -47,10 +47,6 @@ export default function Signup() {
     const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
     const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, email: e.target.value })
 
-
-
-
-
     return (
         <>
             <section className="
@@ -85,11 +81,11 @@ export default function Signup() {
                                 after:bg-neutral-700
                                 after:top-11
                                 " >
-                            <label htmlFor="nickname" className="w-full flex">
+                            <label htmlFor="name" className="w-full flex">
                                 <input type="text"
-                                    id="nickname"
-                                    placeholder="your nickname"
-                                    value={credential.nickname}
+                                    id="name"
+                                    placeholder="your name"
+                                    value={credential.name}
                                     autoComplete="off"
                                     onChange={handleNickname}
                                     className="
