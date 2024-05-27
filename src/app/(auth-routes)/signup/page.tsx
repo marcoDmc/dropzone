@@ -33,10 +33,10 @@ export default function Signup() {
         }
 
 
-        try {
-            await Http.post("/user/create", data)
-                .then(res => window.alert(res.data))
-                .catch(err => err)
+
+        await Http.post<string>("/user/create", data)
+            .then(res => window.alert(res.data))
+            .catch(err => err)
         } catch (err) {
             console.error(err)
         }
