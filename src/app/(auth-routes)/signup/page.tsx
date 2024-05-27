@@ -43,7 +43,7 @@ export default function Signup() {
     }
 
 
-    const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, nickname: e.target.value })
+    const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
     const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
     const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, email: e.target.value })
 
