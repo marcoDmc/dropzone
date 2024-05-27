@@ -35,7 +35,9 @@ export default function Signin() {
     if (!data.token) return
 
     handleSetCoookies({
+      id: data?.id,
       name: credential.name,
+      email: data?.email,
       token: data?.token
     })
 
