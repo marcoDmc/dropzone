@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation";
 
 export default function Signup() {
 
-    const [credential, setCredential] = useState({ nickname: "", password: "", email: "" })
-
+    const [credential, setCredential] = useState({ name: "", password: "", email: "" })
+    const router = useRouter()
     const handleSubmit = async (event: any) => {
 
         event.preventDefault()
