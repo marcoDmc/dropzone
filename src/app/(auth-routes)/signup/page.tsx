@@ -5,7 +5,8 @@ import { Http } from "@/app/config/axiosConfig"
 import { methods } from "@/utils/methods"
 import { ChangeEvent, useState } from "react"
 import Icon from "@/utils/icons"
-import cookie from "js-cookie"
+import { ISignupData } from "@/types/ISignupDataDTO"
+import { useRouter } from "next/navigation";
 
 
 
