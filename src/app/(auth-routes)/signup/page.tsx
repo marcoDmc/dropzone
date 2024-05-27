@@ -18,7 +18,7 @@ export default function Signup() {
 
         event.preventDefault()
 
-        const testNickname = methods.handleVerifyNickname(credential.nickname)
+        const testNickname = methods.handleVerifyNickname(credential.name)
         const testPassword = methods.handleVerifyPassword(credential.password)
         const testEmail = methods.handleVerifyEmail(credential.email)
 
