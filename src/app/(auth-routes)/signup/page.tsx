@@ -26,8 +26,8 @@ export default function Signup() {
         if (!testNickname || !testPassword || !testEmail) return
 
 
-        const data = {
-            nickname: credential.nickname,
+        const data: ISignupData = {
+            name: credential.name,
             email: credential.email,
             password: credential.password
         }
