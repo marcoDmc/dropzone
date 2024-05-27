@@ -48,7 +48,7 @@ export default function Signin() {
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
 
   const handleSetCoookies = (credentials: ICookies) => {
-    const { name, token } = credentials
+    const { name, token , id, email } = credentials
     if (!name || !token) return
     cookie.set("token", token)
     cookie.set("name", name)
