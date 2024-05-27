@@ -37,11 +37,8 @@ export default function Signup() {
         await Http.post<string>("/user/create", data)
             .then(res => window.alert(res.data))
             .catch(err => err)
-        } catch (err) {
-            console.error(err)
-        }
-        cookie.set("nickname", credential.nickname)
-        cookie.set("password", credential.password)
+
+        router.replace("/")
 
     }
 
