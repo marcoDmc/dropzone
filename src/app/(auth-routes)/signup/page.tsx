@@ -7,8 +7,7 @@ import { ChangeEvent, useState } from "react"
 import Icon from "@/utils/icons"
 import { ISignupData } from "@/types/ISignupDataDTO"
 import { useRouter } from "next/navigation";
-
-
+import { signup } from "@/service/signup"
 
 export default function Signup() {
 
