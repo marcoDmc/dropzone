@@ -1,11 +1,9 @@
-interface IUser {
+export interface ISigninData {
+    id: number,
     name: string,
-    password: string,
+    email:string,
     token: string
 }
 
 
-export interface ISigninData  extends IUser{
-    user: object
-}
 
