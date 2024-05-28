@@ -24,8 +24,7 @@ export default function Signup() {
 
         if (!testNickname || !testPassword || !testEmail) return
 
-
-        const data: ISignupData = {
+        await signup.handleSignup({
             name: credential.name,
             email: credential.email,
             password: credential.password
