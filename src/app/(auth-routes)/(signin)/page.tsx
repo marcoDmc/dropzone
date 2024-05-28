@@ -52,6 +52,8 @@ export default function Signin() {
     if (!name || !token) return
     cookie.set("token", token)
     cookie.set("name", name)
+    cookie.set("id",String(id))
+    cookie.set("email",email)
   }
   const handleAuthenticationRoutes = async (credentials: INextAuth) => {
 
