@@ -28,13 +28,7 @@ export default function Signup() {
             name: credential.name,
             email: credential.email,
             password: credential.password
-        }
-
-
-
-        await Http.post<string>("/user/create", data)
-            .then(res => window.alert(res.data))
-            .catch(err => err)
+        }).then(response => window.alert(response))
 
         router.replace("/")
 
