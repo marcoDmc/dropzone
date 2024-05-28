@@ -27,7 +27,7 @@ const nextAuthOptions: NextAuthOptions = {
                     name,
                     password
                 }
-                const res = await Http.post("/login", data, options)
+                const res = await Http.post("/signin", data, options)
 
                 const user = await res.data;
 
