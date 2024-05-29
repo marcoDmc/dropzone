@@ -1,92 +1,100 @@
 "use client"
 
-import { methods } from "@/utils/methods";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { signIn } from "next-auth/react";
-import { FormComponent } from "@/components/FormComponent/Form";
+import {methods} from "@/utils/methods";
+import {useRouter} from "next/navigation";
+import {ChangeEvent, useState} from "react";
+import {signIn} from "next-auth/react";
+import {FormComponent} from "@/components/FormComponent/Form";
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
-import { signin } from "@/service/signin";
-import { ICookies } from "@/types/ICookiesDTO";
-import { INextAuth } from "@/types/INextAuthDTO";
+import {signin} from "@/service/signin";
+import {ICookies} from "@/types/ICookiesDTO";
+import {INextAuth} from "@/types/INextAuthDTO";
 
 export default function Signin() {
 
-  const [credential, setCredential] = useState({ name: "", password: "" })
-  const router = useRouter()
+    const [credential, setCredential] = useState({name: "", password: ""})
+    const router = useRouter()
 
-  const handleSubmit = async (event: any) => {
+    const handleSubmit = async (event: any) => {
 
-    event.preventDefault()
+        event.preventDefault()
 
-    if (!methods.handleVerifyNickname(credential.name) || !methods.handleVerifyPassword(credential.password)) return
+        if (!methods.handleVerifyNickname(credential.name) || !methods.handleVerifyPassword(credential.password)) return
 
-    handleAuthenticationRoutes({
-      name: credential.name,
-      password: credential.password
-    })
+       await handleAuthenticationRoutes({
+            name: credential.name,
+            password: credential.password
+        })
+       
+        if (!credential.name || !credential.password) return
 
-    const data = await signin.handleLogin({
-      name: credential.name,
-      password: credential.password
-    }).then(res => res)
+        const data = await signin.handleLogin({
+            name: credential.name,
+            password: credential.password
+        }).then(res => res)
 
-    if (!data.token) return
+        if (!data.token) return
 
-    handleSetCoookies({
-      id: data?.id,
-      name: credential.name,
-      email: data?.email,
-      token: data?.token
-    })
+        handleSetCoookies({
+            id: data?.id,
+            name: credential.name,
+            email: data?.email,
+            token: data?.token
+        })
 
-  }
-
-  const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
-
-  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
-
-  const handleSetCoookies = (credentials: ICookies) => {
-    const { name, token , id, email } = credentials
-    if (!name || !token) return
-    cookie.set("token", token)
-    cookie.set("name", name)
-    cookie.set("id",String(id))
-    cookie.set("email",email)
-  }
-  const handleAuthenticationRoutes = async (credentials: INextAuth) => {
-
-    const { name, password } = credentials
-
-    if (!name || !password) return
-
-    const result = await signIn('credentials', {
-      name,
-      password,
-      redirect: false
-    })
-
-    if (result?.error) {
-      console.log(result)
-      return
     }
 
-    router.replace("/upload")
-  }
+    const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({...credential, name: e.target.value})
 
-  return (
+    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({
 
-    <>
-      <section className="bg-zinc-900
+        ...credential,
+
+        password: e.target.value
+
+    })
+
+    const handleSetCoookies = (credentials: ICookies) => {
+        const {name, token, id, email} = credentials
+        if (!name || !token) return
+        cookie.set("token", token)
+        cookie.set("name", name)
+        cookie.set("id", String(id))
+        cookie.set("email", email)
+    }
+    const handleAuthenticationRoutes = async (credentials: INextAuth) => {
+
+        const {name, password} = credentials
+
+        if (!name || !password) return
+
+        const result = await signIn('credentials', {
+            name,
+            password,
+            redirect: false
+        })
+
+        if (result?.error) {
+            console.log(result)
+            return
+        }
+
+        router.replace("/upload")
+    }
+
+    return (
+
+        <>
+            <section className="bg-zinc-900
       grid
       place-items-center
       h-screen
       w-full
       ">
-        <FormComponent.Root handleSubmit={handleSubmit}>
-          <FormComponent.Content>
-            <fieldset className="
+                <FormComponent.Root handleSubmit={handleSubmit}>
+                    <FormComponent.Content>
+                        <fieldset className="
             border
             border-zinc-500
             h-full
@@ -105,15 +113,15 @@ export default function Signin() {
             after:h-px
             after:bg-neutral-700
             after:top-11
-            " >
-              <label htmlFor="name" className="w-full flex">
-                <input type="text"
-                  id="name"
-                  autoComplete="off"
-                  placeholder="your name"
-                  value={credential.name}
-                  onChange={handleName}
-                  className="
+            ">
+                            <label htmlFor="name" className="w-full flex">
+                                <input type="text"
+                                       id="name"
+                                       autoComplete="off"
+                                       placeholder="your name"
+                                       value={credential.name}
+                                       onChange={handleName}
+                                       className="
                   bg-transparent
                   w-full
                   p-1
@@ -121,21 +129,21 @@ export default function Signin() {
                   text-neutral-100
                   placeholder:text-sm
                   "
-                />
-              </label>
-              <label htmlFor="password" className="
+                                />
+                            </label>
+                            <label htmlFor="password" className="
                 w-full flex
                 items-center
                 justify-between
-              " >
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="your secret password"
-                  value={credential.password}
-                  onChange={handlePassword}
-                  autoComplete="off"
-                  className="
+              ">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    placeholder="your secret password"
+                                    value={credential.password}
+                                    onChange={handlePassword}
+                                    autoComplete="off"
+                                    className="
                   bg-transparent
                   w-full
                   p-1
@@ -143,23 +151,25 @@ export default function Signin() {
                   text-neutral-100
                   placeholder:text-sm
                   "
-                />
-                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
+                                />
+                                <Icon.BsKey size={25} style={{color: "#fff"}}/>;
 
-              </label>
-            </fieldset>
-            <FormComponent.Button name="sign in" />
-          </FormComponent.Content>
-        </FormComponent.Root>
-        <div className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
-          <p className="first-letter:capitalize">
-            forgot your <a href="/forgot" className="text-blue-400">password</a>
-          </p>/
-          <p className="first-letter:capitaliz">
-            create an <a href="/signup" className="text-blue-400">account</a>
-          </p>
-        </div>
-      </section>
-    </>
-  );
+                            </label>
+                        </fieldset>
+                        <FormComponent.Button name="sign in"/>
+                    </FormComponent.Content>
+                </FormComponent.Root>
+                <div
+
+                    className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
+                    <p className="first-letter:capitalize">
+                        forgot your <a href="/forgot" className="text-blue-400">password</a>
+                    </p>/
+                    <p className="first-letter:capitaliz">
+                        create an <a href="/signup" className="text-blue-400">account</a>
+                    </p>
+                </div>
+            </section>
+        </>
+    );
 }

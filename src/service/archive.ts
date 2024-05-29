@@ -2,7 +2,7 @@ import { Http } from "@/app/config/axiosConfig"
 
 
 export const archive = {
-    async handleCreate(email: string, password: string, file: File, token: string): Promise<any> {
+    async handleCreate(email: string, file: File, token: string): Promise<any> {
 
         const response = {
             status: 0,
@@ -10,15 +10,14 @@ export const archive = {
         }
 
 
-        if (!token || !email || !password || !file) return
+        if (!token || !email || !file) return
 
         try {
             const options = {
                 headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'multipart/form-data',
-                    'Email': email,
-                    'Password': password
+                    'email': email,
                 },
                 onUploadProgress: (data: any) => {
                     response.total = Math.round(100 * (data.loaded

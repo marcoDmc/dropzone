@@ -1,14 +1,13 @@
 "use client"
 
-import { Http } from "@/app/config/axiosConfig";
-import { methods } from "@/utils/methods";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { environment } from "@/utils/environment";
-import { ICredentialFiles } from "@/types/ICredentialFilesDTO"
+import {Http} from "@/app/config/axiosConfig";
+import {methods} from "@/utils/methods";
+import {motion} from "framer-motion";
+import {useEffect, useState} from "react";
+import {ICredentialFiles} from "@/types/ICredentialFilesDTO"
 import Icon from "@/utils/icons"
 import cookie from "js-cookie"
-import { archive } from "@/service/archive";
+import {archive} from "@/service/archive";
 
 export default function Upload() {
     const [fileInfo, setFileInfo] = useState<ICredentialFiles>({
@@ -21,20 +20,23 @@ export default function Upload() {
     const [spinner, setSpinner] = useState<boolean>(false)
     const [range, setRange] = useState<number | null | undefined>(0)
     const file = methods.handleReturnTypeFile(fileInfo.filename)
-
+    const getToken = String(cookie.get("token"))
+    const getEmail = String(cookie.get("email"))
     const handleGetNameFile = (e: any) => {
 
         if (e.target.files[0]) {
             if (methods.handleVerifyFiles(e.target.files[0].name.split(".")[1])) {
-
-                const filename = e.target.files[0].name
-                const filetype = e.target.files[0].type
-                const filesize = e.target.files[0].size
-
-                setFileInfo(prev => ({ ...prev, filename: methods.handleFilenameFormatting(filename) }))
-                setFileInfo(prev => ({ ...prev, type: filetype }))
-                setFileInfo(prev => ({ ...prev, size: methods.handleConvertingMeasurements(filesize) }))
+                const {name, type, size} = e.target.files[0]
+                // @ts-ignore
+                setFileInfo(prev => ({
+                        ...prev,
+                        filename: methods.handleFilenameFormatting(name),
+                        type: type,
+                        size: methods.handleConvertingMeasurements(size)
+                    }
+                ))
             }
+
             return
         }
     }
@@ -49,21 +51,24 @@ export default function Upload() {
 
         const file = event.target.file.files[0]
 
-        const getToken = String(cookie.get("token"))
-        const getPassword = String(cookie.get("password"))
+        if (getToken && getEmail) {
 
-        if (getToken && getPassword) {
-
-            const response = await archive.handleCreate(environment.email, getPassword, file, getToken)
+            const response = await archive.handleCreate(getEmail, file, getToken)
             setStatus(response?.status)
 
             if (response?.status !== 201) {
                 setRange(0)
-                setFileInfo(prev => ({ ...prev, filename: "" }))
                 setSpinner(false)
-                setFileInfo(prev => ({ ...prev, type: "" }))
-                setFileInfo(prev => ({ ...prev, size: "..." }))
+                setFileInfo(prev => ({
+                        ...prev,
+                        filename: "",
+                        type: "",
+                        size: ""
+                    }
+                ))
                 window.alert("file already exist")
+                return
+
             }
 
             setRange(response?.total)
@@ -74,28 +79,26 @@ export default function Upload() {
         const downloadFile = async () => {
             try {
                 if (!fileInfo.filename || status !== 201) return;
-
                 const response = await Http.get(`user/file/download/${fileInfo.filename}`, {
                     headers: {
                         'Content-Type': 'image/*',
                         'Content-Disposition': `attachment; filename="${fileInfo.filename}"`,
-                        'Email': environment.email,
-                        'Password': environment.password
+                        'email': getEmail,
                     },
                     responseType: 'blob'
                 });
 
-                const blob = new Blob([response.data], { type: 'image/*' });
+                const blob = new Blob([response.data], {type: 'image/*'});
                 const url = URL.createObjectURL(blob);
 
-                setFileInfo(prev => ({ ...prev, url: url }));
+                setFileInfo(prev => ({...prev, url: url}));
 
             } catch (error) {
                 console.error('Error downloading the file:', error);
             }
         };
 
-        downloadFile();
+        downloadFile().then(response => response);
     }, [status]);
 
 
@@ -162,7 +165,7 @@ export default function Upload() {
                 text-blue-600
                 "/>
                         <input onChange={handleGetNameFile} type="file" name="file" id="file"
-                            className="w-full
+                               className="w-full
                                         h-full
                                         bg-red-300
                                         absolute
@@ -216,9 +219,7 @@ export default function Upload() {
                             className="
             text-xs
             ">size: <span className="text-red-500">{fileInfo.size ? fileInfo.size : "..."}</span></p>
-                    </span >
-
-
+                    </span>
 
 
                     <div className="
@@ -256,19 +257,19 @@ export default function Upload() {
                     transition-all 
                     ">
                                 {
-                                    file == "image" && <Icon.BsFileEarmarkImage size={20} style={{ color: "green" }} />
+                                    file == "image" && <Icon.BsFileEarmarkImage size={20} style={{color: "green"}}/>
                                 }
                                 {
-                                    file == "doc" && <Icon.BsFiletypeDoc size={20} style={{ color: "blue" }} />
+                                    file == "doc" && <Icon.BsFiletypeDoc size={20} style={{color: "blue"}}/>
                                 }
                                 {
-                                    file == "pdf" && <Icon.PiFilePdf size={20} style={{ color: "red" }} />
+                                    file == "pdf" && <Icon.PiFilePdf size={20} style={{color: "red"}}/>
                                 }
                                 {
-                                    file == "excel" && <Icon.RiFileExcel2Line size={20} style={{ color: "orange" }} />
+                                    file == "excel" && <Icon.RiFileExcel2Line size={20} style={{color: "orange"}}/>
                                 }
                                 {
-                                    file == "text" && <Icon.AiFillFileText size={20} style={{ color: "black" }} />
+                                    file == "text" && <Icon.AiFillFileText size={20} style={{color: "black"}}/>
                                 }
                                 {fileInfo.filename ? fileInfo.filename : "waiting"}
                             </strong>
@@ -307,7 +308,7 @@ export default function Upload() {
                                     items-center
                                     justify-center
                                     ">
-                                        <Icon.ImDownload size={16} style={{ color: "red" }} />
+                                        <Icon.ImDownload size={16} style={{color: "red"}}/>
                                     </div>
                                 </a>
                             )
@@ -343,8 +344,8 @@ export default function Upload() {
                                         before:max-h-1.5
                                         before:top-0
                                        "
-                                    animate={{ rotate: 360 }}
-                                    transition={{ ease: "linear", duration: 2, repeat: Infinity }}
+                                    animate={{rotate: 360}}
+                                    transition={{ease: "linear", duration: 2, repeat: Infinity}}
                                 />
 
                             )
@@ -368,7 +369,8 @@ export default function Upload() {
                                     "bg-neutral-300 w-full max-w-20 p-1.5 outline-none text-neutral-500 rounded border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-pointer hover:scale-105 hover:transition-all opacity-100"
                                     : "bg-neutral-300 w-full max-w-20 p-1.5 text-neutral-500 rounded border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-none pointer-events-none opacity-35"
                             }
-                        >ulpload</button>
+                        >ulpload
+                        </button>
                     </div>
 
                 </form>

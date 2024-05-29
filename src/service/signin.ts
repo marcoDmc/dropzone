@@ -4,11 +4,8 @@ import { ISigninData } from "@/types/ISigninDataDTO"
 
 export const signin = {
 
-    async handleLogin(credentials: ISigninCredentials): Promise<ISigninData | any> {
+    async handleLogin(credentials: ISigninCredentials): Promise<ISigninData> {
         const { name, password } = credentials
-
-        if (!name || !password) return
-
         const data = { name, password }
 
         const options = { headers: { "Content-Type": "application/json" } }
