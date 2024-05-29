@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { ReactNode, SyntheticEvent } from "react"
-import files from "../../../public/files.png"
+import files from "../../app/android-chrome-512x512.png"
 
 interface RootProps {
     children: ReactNode,
