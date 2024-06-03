@@ -14,7 +14,7 @@ export default function Button({ name }: ButtonProps) {
             hover:opacity-75
             hover:transition-all
             rounded-lg
-            p-1 first-letter:capitalize
+            p-1 
             text-neutral-100
             my-1
             "

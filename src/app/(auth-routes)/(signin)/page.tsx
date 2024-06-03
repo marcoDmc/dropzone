@@ -163,7 +163,7 @@ export default function Signin() {
 
                     className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
                     <p className="first-letter:capitalize">
-                        forgot your <a href="/forgot" className="text-blue-400">password</a>
+                        forgot your <a href="/forgot-password" className="text-blue-400">password</a>
                     </p>/
                     <p className="first-letter:capitaliz">
                         create an <a href="/signup" className="text-blue-400">account</a>
