@@ -2,7 +2,7 @@
 
 https://github.com/marcoDmc/upload-file/assets/84201745/5a46b528-8da4-4d76-a7d8-c3693962ee61
 
-# Upload File
+# dropzone
 
 ![app](./public/signin.png)
 
