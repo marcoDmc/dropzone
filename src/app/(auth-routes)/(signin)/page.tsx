@@ -1,19 +1,17 @@
 "use client"
-
-import {methods} from "@/utils/methods";
-import {useRouter} from "next/navigation";
-import {ChangeEvent, useState} from "react";
-import {signIn} from "next-auth/react";
-import {FormComponent} from "@/components/FormComponent/Form";
+import cookies from "js-cookie";
 import Icon from "@/utils/icons"
-import cookie from "js-cookie"
-import {signin} from "@/service/signin";
-import {ICookies} from "@/types/ICookiesDTO";
-import {INextAuth} from "@/types/INextAuthDTO";
+import { methods } from "@/utils/methods";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
+import { signIn } from "next-auth/react";
+import { FormComponent } from "@/components/FormComponent/Form";
+import { signin } from "@/service/signin";
+import { INextAuth } from "@/types/INextAuthDTO";
 
 export default function Signin() {
 
-    const [credential, setCredential] = useState({name: "", password: ""})
+    const [credential, setCredential] = useState({ name: "", password: "" })
     const router = useRouter()
 
     const handleSubmit = async (event: any) => {
@@ -22,30 +20,22 @@ export default function Signin() {
 
         if (!methods.handleVerifyNickname(credential.name) || !methods.handleVerifyPassword(credential.password)) return
 
-       await handleAuthenticationRoutes({
+        await handleAuthenticationRoutes({
             name: credential.name,
             password: credential.password
         })
-       
+
         if (!credential.name || !credential.password) return
 
-        const data = await signin.handleLogin({
-            name: credential.name,
-            password: credential.password
-        }).then(res => res)
 
-        if (!data.token) return
+        const data = { name: credential.name, password: credential.password }
 
-        handleSetCoookies({
-            id: data?.id,
-            name: credential.name,
-            email: data?.email,
-            token: data?.token
-        })
-
+        const response = await signin.handleLogin(data)
+        cookies.set("token", response?.token)
+        cookies.set("email", response?.email)
     }
 
-    const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({...credential, name: e.target.value})
+    const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
 
     const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({
 
@@ -55,17 +45,9 @@ export default function Signin() {
 
     })
 
-    const handleSetCoookies = (credentials: ICookies) => {
-        const {name, token, id, email} = credentials
-        if (!name || !token) return
-        cookie.set("token", token)
-        cookie.set("name", name)
-        cookie.set("id", String(id))
-        cookie.set("email", email)
-    }
     const handleAuthenticationRoutes = async (credentials: INextAuth) => {
 
-        const {name, password} = credentials
+        const { name, password } = credentials
 
         if (!name || !password) return
 
@@ -116,12 +98,12 @@ export default function Signin() {
             ">
                             <label htmlFor="name" className="w-full flex">
                                 <input type="text"
-                                       id="name"
-                                       autoComplete="off"
-                                       placeholder="your name"
-                                       value={credential.name}
-                                       onChange={handleName}
-                                       className="
+                                    id="name"
+                                    autoComplete="off"
+                                    placeholder="your name"
+                                    value={credential.name}
+                                    onChange={handleName}
+                                    className="
                   bg-transparent
                   w-full
                   p-1
@@ -152,18 +134,18 @@ export default function Signin() {
                   placeholder:text-sm
                   "
                                 />
-                                <Icon.BsKey size={25} style={{color: "#fff"}}/>;
+                                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
 
                             </label>
                         </fieldset>
-                        <FormComponent.Button name="sign in"/>
+                        <FormComponent.Button name="sign in" />
                     </FormComponent.Content>
                 </FormComponent.Root>
                 <div
 
                     className="text-neutral-300 text-sm gap-2 w-full max-w-96 flex items-center justify-center fixed bottom-28">
                     <p className="first-letter:capitalize">
-                        forgot your <a href="/forgot-password" className="text-blue-400">password</a>
+                        forgot your <a href="/mailer" className="text-blue-400">password</a>
                     </p>/
                     <p className="first-letter:capitaliz">
                         create an <a href="/signup" className="text-blue-400">account</a>
