@@ -1,4 +1,5 @@
 import { Http } from "@/app/config/axiosConfig"
+import { IGetFile } from "@/types/IGetFile"
 
 
 export const archive = {
@@ -20,9 +21,7 @@ export const archive = {
                     'email': email,
                 },
                 onUploadProgress: (data: any) => {
-                    response.total = Math.round(100 * (data.loaded
-                        /
-                        data.total))
+                    response.total = Math.floor(data.loaded / 100)
                 }
             }
 
@@ -36,4 +35,24 @@ export const archive = {
 
         return response
     },
+    async getFile(credentials: IGetFile): Promise<string> {
+
+        if (!credentials.filename || credentials.status !== 201) return "";
+        const response = await Http.get(`user/file/download/${credentials.filename}`, {
+            headers: {
+                'Content-Type': 'image/*',
+                'Content-Disposition': `attachment; filename="${credentials.filename}"`,
+                'email': credentials.email,
+            },
+            responseType: 'blob'
+        });
+
+        const blob = new Blob([response.data], { type: 'image/*' });
+        const url = URL.createObjectURL(blob);
+
+        if (!url) return ""
+        return url
+    }
+
+
 }

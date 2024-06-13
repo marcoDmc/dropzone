@@ -1,9 +1,9 @@
+import CredentialsProvider from "next-auth/providers/credentials"
 import { Http } from "@/app/config/axiosConfig";
 import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials"
 
 const nextAuthOptions: NextAuthOptions = {
-
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -17,20 +17,10 @@ const nextAuthOptions: NextAuthOptions = {
                     password: string;
                 };
 
-                const options = {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
-
-                const data = {
-                    name,
-                    password
-                }
-                const res = await Http.post("/signin", data, options)
+                const res = await Http.post("/signin", { name, password })
 
                 const user = await res.data;
-
+     
                 if (user) return user;
 
                 return null;
