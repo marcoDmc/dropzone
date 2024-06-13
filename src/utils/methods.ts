@@ -123,6 +123,17 @@ export const methods = {
     },
     handleSaveTokenLocal(token: string) {
         localStorage.setItem("token", token)
-    }
+    },
+    handleSubtractEveryTwoSeconds(baseNumber: number) {
+        if (baseNumber < 1) return
+        const intervalId = setInterval(() => {
+            let base = (baseNumber * 100) / 100
+            base -= 10;
+            if (base <= 0) {
+                clearInterval(intervalId);
+            }
+        }, 2000);
 
+        return intervalId
+    }
 }
