@@ -1,9 +1,8 @@
 "use client"
-
+import Icon from "@/utils/icons"
 import { FormComponent } from "@/components/FormComponent/Form"
 import { methods } from "@/utils/methods"
 import { ChangeEvent, useState } from "react"
-import Icon from "@/utils/icons"
 import { useRouter } from "next/navigation";
 import { signup } from "@/service/signup"
 
@@ -39,38 +38,10 @@ export default function Signup() {
 
     return (
         <>
-            <section className="
-                        h-screen
-                        flex
-                        flex-col
-                        items-center
-                        justify-center
-                        bg-zinc-900
-                        ">
-
+            <section className="h-screen flex flex-col items-center justify-center bg-zinc-900">
                 <FormComponent.Root handleSubmit={handleSubmit}>
                     <FormComponent.Content>
-                        <fieldset className="
-                        
-                                border
-                                border-zinc-500
-                                h-full
-                                grid
-                                gap-3
-                                place-items-center
-                                bg-zinc-800
-                                p-2
-                                px-4
-                                rounded-xl
-                                w-full
-                                relative
-                                after:content-['']
-                                after:absolute
-                                after:w-full
-                                after:h-px
-                                after:bg-neutral-700
-                                after:top-11
-                                " >
+                        <fieldset className="border border-zinc-500 h-full grid gap-3 place-items-center bg-zinc-800 p-2 px-4 rounded-xl w-full relative after:content-[''] after:absolute after:w-full after:h-px after:bg-neutral-700 after:top-11" >
                             <label htmlFor="name" className="w-full flex">
                                 <input type="text"
                                     id="name"
@@ -78,43 +49,19 @@ export default function Signup() {
                                     value={credential.name}
                                     autoComplete="off"
                                     onChange={handleNickname}
-                                    className="
-                                    bg-transparent
-                                    w-full
-                                    p-1
-                                    outline-none
-                                    text-neutral-100
-                                    placeholder:text-sm
-                                    "
-                                />
+                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
                             </label>
-                            <label htmlFor="email" className="w-full flex
-                               items-center
-                               justify-between
-                            ">
+                            <label htmlFor="email" className="w-full flex items-center justify-between">
                                 <input type="email"
                                     id="email"
                                     placeholder="you@domain.com"
                                     value={credential.email}
                                     onChange={handleEmail}
                                     autoComplete="off"
-                                    className="
-                                    bg-transparent
-                                    w-full
-                                    p-1
-                                    outline-none
-                                    placeholder:text-sm
-                                    text-neutral-100
-                                    "
-                                />
-
+                                    className="bg-transparent w-full p-1 outline-none placeholder:text-sm text-neutral-100"/>
                                 <Icon.BsAt size={25} style={{ color: "#fff" }} />
                             </label>
-                            <label htmlFor="password" className="
-                                    w-full flex
-                                    items-center
-                                    justify-between
-                                    " >
+                            <label htmlFor="password" className="w-full flex items-center justify-between" >
                                 <input
                                     type="password"
                                     id="password"
@@ -122,15 +69,7 @@ export default function Signup() {
                                     value={credential.password}
                                     onChange={handlePassword}
                                     autoComplete="off"
-                                    className="
-                                    w-full
-                                    p-1
-                                    outline-none
-                                    text-neutral-100
-                                    bg-transparent
-                                    placeholder:text-sm
-                                    "
-                                />
+                                    className="w-full p-1 outline-none text-neutral-100 bg-transparent placeholder:text-sm"/>
                                 <Icon.BsKey size={25} style={{ color: "#fff" }} />;
                             </label>
                         </fieldset>
