@@ -21,7 +21,6 @@ export const archive = {
                     'email': email,
                 },
                 onUploadProgress: (data: any) => {
-                    console.log(data.loaded)
                     response.total = Math.floor(data.loaded / 100)
                 }
             }
