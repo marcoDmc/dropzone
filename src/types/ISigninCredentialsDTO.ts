@@ -1,4 +1,4 @@
-export interface ISigninCredentials {
+export interface ISigninCredentialsDTO {
     name: string,
     password: string
 }

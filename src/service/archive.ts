@@ -1,5 +1,5 @@
 import { Http } from "@/app/config/axiosConfig"
-import { IGetFile } from "@/types/IGetFile"
+import { IGetFileDTO } from "@/types/IGetFileDTO"
 
 
 export const archive = {
@@ -35,7 +35,7 @@ export const archive = {
 
         return response
     },
-    async getFile(credentials: IGetFile): Promise<string> {
+    async getFile(credentials: IGetFileDTO): Promise<string> {
 
         if (!credentials.filename || credentials.status !== 201) return "";
         const response = await Http.get(`user/file/download/${credentials.filename}`, {
