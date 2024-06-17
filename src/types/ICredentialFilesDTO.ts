@@ -1,4 +1,4 @@
-export interface ICredentialFiles {
+export interface ICredentialFilesDTO {
     filename: string,
     size: string,
     type: string,

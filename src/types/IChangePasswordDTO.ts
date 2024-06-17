@@ -1,4 +1,4 @@
-export interface IChangePassword {
+export interface IChangePasswordDTO {
     name: string
     password: string
     newPassword: string

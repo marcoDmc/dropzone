@@ -1,4 +1,4 @@
-export interface INextAuth {
+export interface INextAuthDTO {
     name: string,
     password: string
 }

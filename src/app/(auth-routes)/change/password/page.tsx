@@ -3,21 +3,29 @@ import Icon from "@/utils/icons"
 import { ChangeEvent, useState } from "react";
 import { FormComponent } from "@/components/FormComponent/Form";
 import { password } from "@/service/password";
+import { useRouter } from "next/navigation";
 
 
 export default function changePassword() {
     const [credential, setCredential] = useState({ name: "", password: "", newPassword: "" })
+    const router = useRouter()
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
-        if (!credential) return
+        if (!credential.name || !credential.newPassword || !credential.password) return
 
-        await password.change({
+        const response = await password.change({
             name: credential.name,
             password: credential.password,
             newPassword: credential.newPassword
         })
+
+        if (response.status == 200) {
+            window.alert(response.message)
+            setCredential(prev => ({ ...prev, name: "", newPassword: "", password: "" }))
+            router.push("/")
+        } else window.alert(response.message)
     }
 
     const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
@@ -43,7 +51,7 @@ export default function changePassword() {
                                 placeholder="your name"
                                 value={credential.name}
                                 onChange={handleName}
-                                className="bg-transparent w-full p-1 outline-nonetext-neutral-100placeholder:text-sm"/>
+                                className="bg-transparent text-neutral-50 outline-none w-full p-1 outline-nonetext-neutral-100placeholder:text-sm" />
                         </label>
                         <label htmlFor="password" className="w-full flex items-center justify-between">
                             <input
@@ -53,7 +61,7 @@ export default function changePassword() {
                                 value={credential.password}
                                 onChange={handlePassword}
                                 autoComplete="off"
-                                className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
+                                className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm" />
                             <Icon.BsKey size={25} style={{ color: "#fff" }} />;
                         </label>
 
@@ -66,11 +74,11 @@ export default function changePassword() {
                                 value={credential.newPassword}
                                 onChange={handleNewPassword}
                                 autoComplete="off"
-                                className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
+                                className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm" />
                             <Icon.BsKey size={25} style={{ color: "#fff" }} />;
                         </label>
                     </fieldset>
-                    <FormComponent.Button name="sign in" />
+                    <FormComponent.Button name="forgot password" />
                 </FormComponent.Content>
             </FormComponent.Root>
 

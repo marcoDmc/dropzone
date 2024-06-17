@@ -1,4 +1,4 @@
-export interface ICookies {
+export interface ICookiesDTO {
     id: number,
     name: string,
     email:string,

@@ -2,22 +2,19 @@
 import Cookies from "js-cookie"
 import { methods } from "@/utils/methods";
 import { useEffect, useState } from "react";
-import { ICredentialFiles } from "@/types/ICredentialFilesDTO"
+import { ICredentialFilesDTO } from "@/types/ICredentialFilesDTO"
 import { archive } from "@/service/archive";
 import { DropZone } from "@/components/DropZone/DropZone";
 
 export default function Upload() {
-    const [fileInfo, setFileInfo] = useState<ICredentialFiles>({
+    const [fileInfo, setFileInfo] = useState<ICredentialFilesDTO>({
         filename: "",
         size: "",
         type: "",
         url: ""
     });
-    const [status, setStatus] = useState<number | null>();
 
-    const [spinner, setSpinner] = useState<boolean>(false)
-
-    const [range, setRange] = useState<number | null | undefined>(0)
+    const [credentials, setCredentials] = useState({ status: 0, spinner: false, range: 0 })
 
     const file = methods.handleReturnTypeFile(fileInfo.filename)
 
@@ -46,8 +43,8 @@ export default function Upload() {
 
         event.preventDefault()
 
-        if (status !== 201 || status === null) setSpinner(true)
-        else setSpinner(false)
+        if (credentials.status !== 201 || credentials.status === null) setCredentials(prev => ({ ...prev, spinner: true }))
+        else setCredentials(prev => ({ ...prev, spinner: false }))
 
         if (!event.target.file.files[0]) return
 
@@ -56,11 +53,10 @@ export default function Upload() {
         if (getToken && getEmail) {
 
             const response = await archive.handleCreate(getEmail, file, getToken)
-            setStatus(response?.status)
+            setCredentials(prev => ({ ...prev, status: response?.status }))
 
             if (response?.status !== 201) {
-                setRange(0)
-                setSpinner(false)
+                setCredentials(prev => ({ ...prev, range: 0, spinner: false }))
                 setFileInfo(prev => ({
                     ...prev,
                     filename: "",
@@ -73,7 +69,7 @@ export default function Upload() {
 
             }
 
-            setRange(response?.total)
+            setCredentials(prev => ({ ...prev, range: response?.total }))
         }
     }
 
@@ -83,19 +79,15 @@ export default function Upload() {
             const url = await archive.getFile({
                 email: getEmail,
                 filename: fileInfo.filename,
-                status: Number(status)
+                status: Number(credentials.status)
             })
 
             setFileInfo(prev => ({ ...prev, url: url }))
         } handleUrlDownloadFile()
-    }, [status]);
+    }, [credentials.status]);
 
 
-    useEffect(() => {
-        setStatus(0)
-        setRange(0)
-        setSpinner(false)
-    }, [fileInfo.filename])
+    useEffect(() => setCredentials(prev => ({ ...prev, status: 0, range: 0, spinner: false })), [fileInfo.filename])
 
     return (
         <>
@@ -106,10 +98,10 @@ export default function Upload() {
                         handleGetNameFile={handleGetNameFile}
                         file={file}
                         filename={fileInfo.filename}
-                        range={range}
+                        range={credentials.range}
                         size={fileInfo.size}
-                        spinner={spinner}
-                        status={status}
+                        spinner={credentials.spinner}
+                        status={credentials.status}
                         type={fileInfo.type}
                         url={fileInfo.url}
                     />
