@@ -16,14 +16,14 @@ export default function ForgotPassword() {
         event.preventDefault()
 
         const rgxEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (email) {
             if (!rgxEmail.test(email)) return
         }
 
         const response = await mailer.sendMagicLink(email)
 
-        window.alert(response)
+        window.alert(response.message)
 
     }
 
@@ -41,10 +41,10 @@ export default function ForgotPassword() {
                                     placeholder="your email"
                                     value={email}
                                     onChange={handlEmail}
-                                    className="bg-transparent w-full outline-none text-neutral-100 placeholder:text-sm"/>
+                                    className="bg-transparent w-full outline-none text-neutral-100 placeholder:text-sm" />
                             </label>
                         </fieldset>
-                        <FormComponent.Button name="send reset password" />
+                        <FormComponent.Button name="continue" />
                     </FormComponent.Content>
                 </FormComponent.Root>
                 <div
