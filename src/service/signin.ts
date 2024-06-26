@@ -1,5 +1,5 @@
 import { Http } from "@/app/config/axiosConfig"
-import { ISigninCredentialsDTO } from "@/types/ISigninCredentialsDTO"
+import { ISigninCredentialsDTO } from "@/interfaces/ISigninCredentialsDTO"
 
 
 export const signin = {
