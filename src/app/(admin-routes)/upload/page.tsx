@@ -2,21 +2,21 @@
 import Cookies from "js-cookie"
 import { methods } from "@/utils/methods";
 import { useEffect, useState } from "react";
-import { ICredentialFilesDTO } from "@/types/ICredentialFilesDTO"
 import { archive } from "@/service/archive";
 import { DropZone } from "@/components/DropZone/DropZone";
+import { Archive } from "@/types/global";
 
 export default function Upload() {
-    const [fileInfo, setFileInfo] = useState<ICredentialFilesDTO>({
+    const [file, setFile] = useState({
         filename: "",
-        size: "",
         type: "",
+        size: "",
         url: ""
     });
 
     const [credentials, setCredentials] = useState({ status: 0, spinner: false, range: 0 })
 
-    const file = methods.handleReturnTypeFile(fileInfo.filename)
+    const filetype = methods.handleReturnTypeFile(file.filename)
 
     const getToken = String(Cookies.get("token"))
 
@@ -28,7 +28,7 @@ export default function Upload() {
             if (methods.handleVerifyFiles(e.target.files[0].name.split(".")[1])) {
                 const { name, type, size } = e.target.files[0]
                 // @ts-ignore
-                setFileInfo(prev => ({
+                setFile(prev => ({
                     ...prev,
                     filename: methods.handleFilenameFormatting(name),
                     type: type,
@@ -43,51 +43,46 @@ export default function Upload() {
 
         event.preventDefault()
 
-        if (credentials.status !== 201 || credentials.status === null) setCredentials(prev => ({ ...prev, spinner: true }))
-        else setCredentials(prev => ({ ...prev, spinner: false }))
-
         if (!event.target.file.files[0]) return
 
         const file = event.target.file.files[0]
 
-        if (getToken && getEmail) {
+        if (!getToken || !getEmail) return
 
-            const response = await archive.handleCreate(getEmail, file, getToken)
-            setCredentials(prev => ({ ...prev, status: response?.status }))
+        const request: Archive = await archive.handleCreate(getEmail, file, getToken)
 
-            if (response?.status !== 201) {
-                setCredentials(prev => ({ ...prev, range: 0, spinner: false }))
-                setFileInfo(prev => ({
-                    ...prev,
-                    filename: "",
-                    type: "",
-                    size: ""
-                }
-                ))
-                window.alert("file already exist")
-                return
+        setCredentials(prev => ({ ...prev, range: request?.total, status: request.status, spinner: true }))
 
+        if (!request) {
+
+            setCredentials(prev => ({ ...prev, range: 0, spinner: false }))
+            setFile(prev => ({
+                ...prev,
+                filename: "",
+                type: "",
+                size: ""
             }
+            ))
 
-            setCredentials(prev => ({ ...prev, range: response?.total }))
+            return window.alert("file already exist")
         }
     }
 
+
     useEffect(() => {
         async function handleUrlDownloadFile() {
-
             const url = await archive.getFile({
                 email: getEmail,
-                filename: fileInfo.filename,
+                filename: file.filename,
                 status: Number(credentials.status)
             })
 
-            setFileInfo(prev => ({ ...prev, url: url }))
-        } handleUrlDownloadFile()
+            setFile(prev => ({ ...prev, url: url }))
+        } handleUrlDownloadFile().then(res => res)
     }, [credentials.status]);
 
 
-    useEffect(() => setCredentials(prev => ({ ...prev, status: 0, range: 0, spinner: false })), [fileInfo.filename])
+    useEffect(() => setCredentials(prev => ({ ...prev, status: 0, range: 0, spinner: false })), [file.filename])
 
     return (
         <>
@@ -96,14 +91,15 @@ export default function Upload() {
                     <DropZone.Form
                         handleSubmit={handleSubmit}
                         handleGetNameFile={handleGetNameFile}
-                        file={file}
-                        filename={fileInfo.filename}
+                        file={filetype}
+                        filename={file.filename}
                         range={credentials.range}
-                        size={fileInfo.size}
+                        size={file.size}
                         spinner={credentials.spinner}
                         status={credentials.status}
-                        type={fileInfo.type}
-                        url={fileInfo.url}
+                        type={file.type}
+                        url={file.url}
+                        setRange={setCredentials}
                     />
                 </DropZone.Content>
             </DropZone.Root>
