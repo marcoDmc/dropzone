@@ -7,7 +7,7 @@ import { ChangeEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FormComponent } from "@/components/FormComponent/Form";
 import { signin } from "@/service/signin";
-import { INextAuthDTO } from "@/types/INextAuthDTO";
+import { INextAuthDTO } from "@/interfaces/INextAuthDTO";
 
 export default function Signin() {
 

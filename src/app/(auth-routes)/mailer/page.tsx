@@ -23,7 +23,7 @@ export default function ForgotPassword() {
 
         const response = await mailer.sendMagicLink(email)
 
-        window.alert(response.message)
+        window.alert(response)
 
     }
 
