@@ -47,7 +47,7 @@ Sinta-se à vontade para contribuir com este projeto! Seja por meio de correçõ
 
 Clone o repositório:
 ```bash
-git clone https://github.com/marcodmc/dropzone.git
+git clone https://github.com/marcoDmc/dropzone.git
 ```
 
 #### Instale as dependências do frontend:
@@ -115,7 +115,7 @@ Este projeto está atualmente implantado na Vercel. Você pode acessá-lo aqui:
 Para qualquer dúvida, sugestão ou problema relacionado a este projeto, sinta-se à vontade para entrar em contato:
 
 meu email: [email](mailto:marcodamasceno0101@outlook.com)
-GitHub Issues: [GitHub Issues](https://github.com/marcodmc/dropzone/issues)
+GitHub Issues: [GitHub Issues](https://github.com/marcoDmc/dropzone/issues)
 Agradeço o seu interesse em contribuir para tornar este projeto ainda melhor!
 
 
