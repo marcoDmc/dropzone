@@ -8,7 +8,7 @@ import { signup } from "@/service/signup"
 
 export default function Signup() {
 
-    const [credential, setCredential] = useState({ name: "", password: "", email: "" })
+    const [credential, setCredential] = useState({ name: "", password: "", email: "", typeInput: false })
     const router = useRouter()
     const handleSubmit = async (event: any) => {
 
@@ -35,6 +35,7 @@ export default function Signup() {
     const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
     const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, password: e.target.value })
     const handleEmail = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, email: e.target.value })
+    const handleAppearHidePassword = () => setCredential(prev => ({ ...prev, typeInput: !credential.typeInput }))
 
     return (
         <>
@@ -49,7 +50,7 @@ export default function Signup() {
                                     value={credential.name}
                                     autoComplete="off"
                                     onChange={handleNickname}
-                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
+                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm" />
                             </label>
                             <label htmlFor="email" className="w-full flex items-center justify-between">
                                 <input type="email"
@@ -58,19 +59,15 @@ export default function Signup() {
                                     value={credential.email}
                                     onChange={handleEmail}
                                     autoComplete="off"
-                                    className="bg-transparent w-full p-1 outline-none placeholder:text-sm text-neutral-100"/>
+                                    className="bg-transparent w-full p-1 outline-none placeholder:text-sm text-neutral-100" />
                                 <Icon.BsAt size={25} style={{ color: "#fff" }} />
                             </label>
                             <label htmlFor="password" className="w-full flex items-center justify-between" >
-                                <input
-                                    type="password"
-                                    id="password"
-                                    placeholder="your secret password"
-                                    value={credential.password}
-                                    onChange={handlePassword}
-                                    autoComplete="off"
-                                    className="w-full p-1 outline-none text-neutral-100 bg-transparent placeholder:text-sm"/>
-                                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
+                                <FormComponent.Password handleAppearHidePassword={handleAppearHidePassword}
+                                    handleChangePassword={handlePassword}
+                                    typePassword={credential.typeInput}
+                                    password={credential.password}
+                                />
                             </label>
                         </fieldset>
                         <FormComponent.Button name="sign up" />

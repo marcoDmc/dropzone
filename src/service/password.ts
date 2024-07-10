@@ -1,6 +1,6 @@
 import { Http } from "@/app/config/axiosConfig";
-import { IChangePasswordDTO } from "@/types/IChangePasswordDTO";
-import { IChangePasswordReturnRequestDTO } from "@/types/IChangePasswordReturnRequestDTO";
+import { IChangePasswordDTO } from "@/interfaces/IChangePasswordDTO";
+import { IChangePasswordReturnRequestDTO } from "@/interfaces/IChangePasswordReturnRequestDTO";
 
 export const password = {
     async change(credentials: IChangePasswordDTO): Promise<IChangePasswordReturnRequestDTO> {

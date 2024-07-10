@@ -1,23 +1,24 @@
-import { useEffect, useState } from 'react';
-import Icons from "@/utils/icons"
-import { motion } from "framer-motion"
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import Icons from "@/utils/icons";
+import { motion } from "framer-motion";
 import { ProgressBar } from './ProgressBar';
 import { IconFile } from './IconFile';
 
 interface FormProps {
-    handleSubmit: (event: any) => Promise<void>
-    handleGetNameFile: (e: any) => void
-    size: string
-    file: string
-    filename: string
-    type: string
-    range: number | null | undefined
-    status: number | null | undefined
-    url: string
-    spinner: boolean
+    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    handleGetNameFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    size: string;
+    file: string;
+    filename: string;
+    type: string;
+    range: number | null;
+    status: number | null;
+    url: string;
+    spinner: boolean;
+    setRange: Dispatch<SetStateAction<{ status: number; spinner: boolean; range: number; }>>;
 }
 
-export function Form({ handleSubmit, handleGetNameFile, size, file, filename, type, range, status, url, spinner }: FormProps) {
+export function Form({ handleSubmit, handleGetNameFile, size, file, filename, type, range, status, url, spinner, setRange }: FormProps) {
 
     const [currentValue, setCurrentValue] = useState(0)
 
@@ -26,6 +27,7 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
             const intervalId = setInterval(() => {
                 setCurrentValue(prev => {
                     const newValue = prev + 100;
+
                     if (newValue >= baseNumber) {
                         clearInterval(intervalId);
                         return baseNumber;
@@ -38,6 +40,12 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
         const intervalId = handleAddEveryTwoSeconds(Number(range));
         return () => clearInterval(intervalId);
     }, [range])
+
+
+
+    useEffect(() => {
+        if (currentValue >= Number(range)) setRange(prev => ({ ...prev, spinner: false }))
+    }, [currentValue])
 
     return (<>
         <form
@@ -63,7 +71,7 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
                     }
                 </div>
                 {
-                    status === 201 && (<a href={url} download={filename}><div className="hover:border-cyan-500 transition-all
+                    status === 201 && currentValue > 0 && !spinner && (<a href={url} download={filename}><div className="hover:border-cyan-500 transition-all
                   w-full max-w-14 cursor-pointer p-2 rounded bg-neutral-100 border flex items-center justify-center">
                         <Icons.ImDownload size={16} style={{ color: "rgb(6 182 212)" }} />
                     </div>
@@ -72,7 +80,7 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
                 }
 
                 {
-                    spinner && status !== 201 && (
+                    spinner && (
                         <motion.div className="w-full max-w-7 bg-cyan-500 rounded-full h-full max-h-7 relative flex items-center justify-center
                         after:absolute after:content-[''] after:rounded-full after:bg-slate-50 after:w-full after:max-w-5
                         after:h-full after:max-h-5 before:absolute before:content-[''] before:bg-slate-50 before:w-full
@@ -93,11 +101,10 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
                             "bg-zinc-900 w-full max-w-20 p-1.5 outline-none text-neutral-100 rounded border border-cyan-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-pointer hover:scale-105 hover:transition-all opacity-100"
                             : "bg-neutral-300 w-full max-w-20 p-1.5 text-neutral-500 rounded border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-none pointer-events-none opacity-35"
                     }
-                >ulpload
+                >upload
                 </button>
             </div>
 
         </form>
     </>)
 }
-

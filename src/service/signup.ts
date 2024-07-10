@@ -1,5 +1,5 @@
 import { Http } from "@/app/config/axiosConfig"
-import { ISignupDataDTO } from "@/types/ISignupDataDTO"
+import { ISignupDataDTO } from "@/interfaces/ISignupDataDTO"
 
 export const signup = {
     async handleSignup(data: ISignupDataDTO): Promise<string> {

@@ -1,8 +1,4 @@
-
-
-https://github.com/marcoDmc/upload-file/assets/84201745/5a46b528-8da4-4d76-a7d8-c3693962ee61
-
-# dropzone
+# Upload File
 
 ![app](./public/signin.png)
 
@@ -56,6 +52,4 @@ GitHub Issues
 [GitHub Issues](https://github.com/marcodmc/upload-file/issues)
 
 Agradeço o seu interesse em contribuir para tornar este projeto ainda melhor!
-
-
 

@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { magicLink } from "@/service/magicLink";
-import { IVerifyMagicLinkDTO } from "@/types/IVerifyMagicLinkDTO";
+import { IVerifyMagicLinkDTO } from "@/interfaces/IVerifyMagicLinkDTO";
 
 export default function urlTokenEmail() {
     const params = useParams()
@@ -15,11 +15,11 @@ export default function urlTokenEmail() {
 
         async function handleMagicLink() {
             const response = await magicLink.verifyMagicLink(String(params.token))
-            setCredential(prev => ({ ...prev, status: response.status, message: response.message, data: response.data }))
+            setCredential(prev => ({ ...prev, message: response }))
             setTimeout(() => {
-                if (response.status != 200) router.push("/")
+                if (response != "redirecting authenticated user") router.push("/")
                 else router.push("/change/password")
-            }, 5000);
+            }, 5000)
         }
         handleMagicLink()
     }, [])
@@ -31,8 +31,8 @@ export default function urlTokenEmail() {
                     <div className=" bg-zinc-900 w-32 h-32 rounded-full"></div>
                     <div className="absolute bg-zinc-900 w-16 h-28 top-0"></div>
                 </div>
-                <h1 className="text-4xl capitalize text-neutral-50">
-                    {!credential.data ? "please wait..." : credential.data}</h1>
+                <h1 className="text-4xl w-full text-center capitalize text-neutral-50">
+                    {!credential.message ? "please wait..." : credential.message}</h1>
             </section>
         </>
     )

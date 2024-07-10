@@ -4,6 +4,7 @@ import { IoCloudUpload, IoCloudUploadSharp } from "react-icons/io5";
 import { PiFilePdf } from "react-icons/pi";
 import { RiFileExcel2Line } from "react-icons/ri";
 import { BsKey, BsAt, BsFileEarmarkImage, BsFiletypeDoc } from "react-icons/bs";
+import { IoLockOpen } from "react-icons/io5";
 
 
 export default {
@@ -15,5 +16,6 @@ export default {
     IoCloudUploadSharp: IoCloudUploadSharp,
     PiFilePdf: PiFilePdf, RiFileExcel2Line,
     BsKey: BsKey,
-    BsAt: BsAt
+    BsAt: BsAt,
+    Padlock: IoLockOpen
 }

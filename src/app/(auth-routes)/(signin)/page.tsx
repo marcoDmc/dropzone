@@ -3,16 +3,17 @@ import cookies from "js-cookie";
 import Icon from "@/utils/icons"
 import { methods } from "@/utils/methods";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FormComponent } from "@/components/FormComponent/Form";
 import { signin } from "@/service/signin";
-import { INextAuthDTO } from "@/types/INextAuthDTO";
+import { INextAuthDTO } from "@/interfaces/INextAuthDTO";
 
 export default function Signin() {
 
-    const [credential, setCredential] = useState({ name: "", password: "" })
+    const [credential, setCredential] = useState({ name: "", password: "", typeInput: false })
     const router = useRouter()
+    const pdwRef = useRef<any>(null)
 
     const handleSubmit = async (event: any) => {
 
@@ -44,14 +45,15 @@ export default function Signin() {
 
     const handleName = (e: ChangeEvent<HTMLInputElement>) => setCredential({ ...credential, name: e.target.value })
 
-    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => setCredential({
+    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
+        setCredential({
 
-        ...credential,
+            ...credential,
 
-        password: e.target.value
+            password: e.target.value
 
-    })
-
+        })
+    }
     const handleAuthenticationRoutes = async (credentials: INextAuthDTO) => {
 
         const { name, password } = credentials
@@ -71,6 +73,8 @@ export default function Signin() {
         router.replace("/upload")
     }
 
+    const handleAppearHidePassword = () => setCredential(prev => ({ ...prev, typeInput: !credential.typeInput }))
+
     return (
 
         <>
@@ -85,18 +89,14 @@ export default function Signin() {
                                     placeholder="your name"
                                     value={credential.name}
                                     onChange={handleName}
-                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
+                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm" />
                             </label>
                             <label htmlFor="password" className="w-full flex items-center justify-between">
-                                <input
-                                    type="password"
-                                    id="password"
-                                    placeholder="your secret password"
-                                    value={credential.password}
-                                    onChange={handlePassword}
-                                    autoComplete="off"
-                                    className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm"/>
-                                <Icon.BsKey size={25} style={{ color: "#fff" }} />;
+                                <FormComponent.Password handleAppearHidePassword={handleAppearHidePassword}
+                                    handleChangePassword={handlePassword}
+                                    typePassword={credential.typeInput}
+                                    password={credential.password}
+                                />
                             </label>
                         </fieldset>
                         <FormComponent.Button name="sign in" />
