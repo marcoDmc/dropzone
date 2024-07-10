@@ -4,12 +4,13 @@ import { ChangeEvent } from "react";
 interface passwordProps {
     typePassword: boolean
     password: string
+    placeholder: string
     handleChangePassword: (e: ChangeEvent<HTMLInputElement>) => void
     handleAppearHidePassword: () => void
 }
 
 
-export function Password({ handleAppearHidePassword, handleChangePassword, typePassword, password }: passwordProps) {
+export function Password({ handleAppearHidePassword, handleChangePassword, typePassword, password , placeholder }: passwordProps) {
     return (
         <>
             {
@@ -22,7 +23,7 @@ export function Password({ handleAppearHidePassword, handleChangePassword, typeP
                             <input
                                 type="text"
                                 id="password"
-                                placeholder="your secret password"
+                                placeholder={placeholder}
                                 value={password}
                                 onChange={handleChangePassword}
                                 autoComplete="off"
@@ -38,7 +39,7 @@ export function Password({ handleAppearHidePassword, handleChangePassword, typeP
                             <input
                                 type="password"
                                 id="password"
-                                placeholder="your secret password"
+                                placeholder={placeholder}
                                 value={password}
                                 onChange={handleChangePassword}
                                 autoComplete="off"

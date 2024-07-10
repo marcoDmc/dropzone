@@ -63,7 +63,9 @@ export default function Signup() {
                                 <Icon.BsAt size={25} style={{ color: "#fff" }} />
                             </label>
                             <label htmlFor="password" className="w-full flex items-center justify-between" >
-                                <FormComponent.Password handleAppearHidePassword={handleAppearHidePassword}
+                                <FormComponent.Password
+                                    placeholder="your secret password"
+                                    handleAppearHidePassword={handleAppearHidePassword}
                                     handleChangePassword={handlePassword}
                                     typePassword={credential.typeInput}
                                     password={credential.password}

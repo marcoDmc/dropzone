@@ -92,7 +92,9 @@ export default function Signin() {
                                     className="bg-transparent w-full p-1 outline-none text-neutral-100 placeholder:text-sm" />
                             </label>
                             <label htmlFor="password" className="w-full flex items-center justify-between">
-                                <FormComponent.Password handleAppearHidePassword={handleAppearHidePassword}
+                                <FormComponent.Password
+                                    placeholder="your secret password"
+                                    handleAppearHidePassword={handleAppearHidePassword}
                                     handleChangePassword={handlePassword}
                                     typePassword={credential.typeInput}
                                     password={credential.password}
