@@ -101,7 +101,7 @@ export function Form({ handleSubmit, handleGetNameFile, size, file, filename, ty
                             "bg-zinc-900 w-full max-w-20 p-1.5 outline-none text-neutral-100 rounded border border-cyan-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-pointer hover:scale-105 hover:transition-all opacity-100"
                             : "bg-neutral-300 w-full max-w-20 p-1.5 text-neutral-500 rounded border border-neutral-400 font-semibold text-xs shadow-md shadow-neutral-400 capitalize transition-all cursor-none pointer-events-none opacity-35"
                     }
-                >ulpload
+                >upload
                 </button>
             </div>
 
